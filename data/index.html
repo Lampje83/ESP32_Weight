@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ESP32 Web Server</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="data:,">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            function doRefresh () {
+                $("#mass").load("/weight", function(responseTxt, statusTxt, xhr) {
+                    $("#mass").append(" gram");
+                    setTimeout(function() { doRefresh(); }, 200);
+                });
+            }
+            
+            function doTare () {
+                $.get("/tare");
+            }
+
+            $(function() {
+                doRefresh ();
+            });
+        </script>
+    </head>
+    <body>
+        <h1>ESP32 Web Server</h1>
+        <p>GPIO state: <strong> %STATE%</strong></p>
+        <div id="mass">----.-- g</div>
+        <p><a href="/on"><button class="button">ON</button></a></p>
+        <p><a href="/off"><button class="button button2">OFF</button></a></p>
+        <p><button class="button" onclick="$.get('/tare');">Tare</button></p>
+    </body>
+</html>
